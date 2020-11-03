@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class TestJDBC {
 
@@ -116,5 +117,19 @@ public class TestJDBC {
         String sql1 = "Insert into payroll_details (id,basic_pay) values (22,15000)";
         ResultSet rs = stmt.executeQuery(sql1);
         Assert.assertEquals(1500,rs.getInt(3));
+    }
+
+    @Test
+    public void givenName_shouldDelete() throws SQLException {
+        Query query = new Query();
+        query.cascadingDelete("Bill33");
+        jdbcdemo connection = new jdbcdemo();
+        Connection con = connection.makeConnection();
+        Statement stmt = con.createStatement();
+        String sql = "select * from employee_payroll;";
+        ResultSet rs = stmt.executeQuery(sql);
+        while (rs.next()){
+            System.out.println(rs.getString("name"));
+        }
     }
 }

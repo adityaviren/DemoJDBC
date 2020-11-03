@@ -1,9 +1,6 @@
 package com.cg.jdbcdemo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Date;
 
 public class Query implements CRUD{
@@ -45,7 +42,28 @@ public class Query implements CRUD{
         }
     }
 
-    @Override
+    public void cascadingDelete(String name) {
+        try {
+            jdbcdemo connection = new jdbcdemo();
+            Connection con = connection.makeConnection();
+            int id = 0;
+            PreparedStatement p = con.prepareStatement("select emp_id from employee where name=?");
+            p.setString(1, name);
+            ResultSet result1 = p.executeQuery();
+            while (result1.next()) {
+                id = result1.getInt(1);
+                break;
+            }
+            //Clear Payroll table
+            p = con.prepareStatement("delete from payroll where emp_id=?");
+            p.setInt(1, id);
+            p.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+        @Override
     public void create(String s) {
 
     }
