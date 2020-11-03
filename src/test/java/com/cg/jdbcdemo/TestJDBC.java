@@ -99,4 +99,22 @@ public class TestJDBC {
         }
         Assert.assertEquals(1,arrayList.size());
     }
+
+    @Test
+    public void givenConnection_shouldCreateTable() throws SQLException {
+        jdbcdemo connection = new jdbcdemo();
+        Connection con = connection.makeConnection();
+        Statement stmt = con.createStatement();
+        String sql = "create table payroll_details " +
+                "(id int unsigned," +
+                "basic_pay int not null," +
+                "deductions int as (basic_pay/10) not null," +
+                "net_pay int as (basic_pay-deductions) not null," +
+                "foreign key (id) references employee_payroll(id)" +
+                ");";
+        stmt.execute(sql);
+        String sql1 = "Insert into payroll_details (id,basic_pay) values (22,15000)";
+        ResultSet rs = stmt.executeQuery(sql1);
+        Assert.assertEquals(1500,rs.getInt(3));
+    }
 }
