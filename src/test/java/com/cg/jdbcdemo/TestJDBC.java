@@ -51,12 +51,34 @@ public class TestJDBC {
         Assert.assertEquals(1,i);
     }
 
+
     @Test
-    public void givenDates_shouldReturnEmployees() {
+    public void givenDates_shouldReturnEmployees() throws SQLException {
         jdbcdemo connection = new jdbcdemo();
         Connection con = connection.makeConnection();
-
+        Statement stmt = con.createStatement();
+        String sql = "Select name from employee_payroll where start>2018-01-01 & start<2019-01-01";
+        ResultSet rs = stmt.executeQuery(sql);
+        int employees=0;
+        while (rs.next()){
+            System.out.println(rs.getString(1));
+            employees++;
+        }
+        Assert.assertEquals(10,employees);
     }
 
-
+    @Test
+    public void givenTable_shouldReturnSumOfSalary() throws SQLException {
+        jdbcdemo connection = new jdbcdemo();
+        Connection con = connection.makeConnection();
+        Statement stmt = con.createStatement();
+        String sql = "select sum(basic_pay) as sumofsalary , gender from employee_payroll group by gender";
+        ResultSet rs = stmt.executeQuery(sql);
+        int count = 0;
+        while (rs.next()){
+            System.out.println(rs.getInt(1)+" "+ rs.getString(2).charAt(0));
+            count++;
+        }
+        Assert.assertEquals(2,count);
+    }
 }
