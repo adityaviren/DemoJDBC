@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class TestJDBC {
 
@@ -80,5 +81,22 @@ public class TestJDBC {
             count++;
         }
         Assert.assertEquals(2,count);
+    }
+
+    @Test
+    public void givenInsertStatement_shouldAddEmployeeIntoList_whenStatementExecutesSuccessfully() throws SQLException {
+        ArrayList<Employee> arrayList = new ArrayList<>();
+        jdbcdemo connection = new jdbcdemo();
+        Connection con = connection.makeConnection();
+        Statement stmt = con.createStatement();
+        Employee e = new Employee(33,"Bill33",789789789,"KhauGali","Sales",'M',15000.0,1000,14000,1000,13000,new Date(8787870000L));
+
+        String sql = "insert into employee_payroll (id,name,phone,address,department,gender,basic_pay,deductions,taxable_pay,income_tax,net_pay,start)" +
+                    "values (33,'Bill33',789789789,'KhauGali','Sales','M',15000.0,1000,14000,1000,13000,'2018-03-01');";
+        int i = stmt.executeUpdate(sql);
+        if(i==1){
+            arrayList.add(e);
+        }
+        Assert.assertEquals(1,arrayList.size());
     }
 }
