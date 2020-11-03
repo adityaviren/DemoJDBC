@@ -57,7 +57,7 @@ public class TestJDBC {
         jdbcdemo connection = new jdbcdemo();
         Connection con = connection.makeConnection();
         Statement stmt = con.createStatement();
-        String sql = "Select name from employee_payroll where start>2018-01-01 & start<2019-01-01";
+        String sql = "Select name from employee_payroll where start between 2018-01-01 and 2019-01-01";
         ResultSet rs = stmt.executeQuery(sql);
         int employees=0;
         while (rs.next()){
