@@ -3,9 +3,7 @@ package com.cg.jdbcdemo;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TestJDBC {
 
@@ -30,5 +28,26 @@ public class TestJDBC {
         con.commit();
         Assert.assertEquals(1,i);
 
+    }
+
+    @Test
+    public void givenPreparedStatement_shouldExecute() throws SQLException {
+        jdbcdemo connection = new jdbcdemo();
+        Connection con = connection.makeConnection();
+        PreparedStatement stmt=con.prepareStatement("insert into employee_payroll (id,name,phone,address,department,gender,basic_pay,income_tax,net_pay,start) " +
+                                                    "values(?,?,?,?,?,?,?,?,?,?)");
+        stmt.setInt(1,15);
+        stmt.setInt(3,97897890);
+        stmt.setInt(7,15000);
+        stmt.setInt(8,1500);
+        stmt.setInt(9,13500);
+        stmt.setDate(10, new Date(8000000));
+        stmt.setString(2,"Laddi");
+        stmt.setString(4,"HP");
+        stmt.setString(5,"NA");
+        stmt.setString(6,"F");
+        int i = stmt.executeUpdate();
+
+        Assert.assertEquals(1,i);
     }
 }
